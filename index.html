@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUIE - Laya Unified Intelligence Ecosystem</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --laya-green: #00a651;
+            --laya-green-light: #33c473;
+            --laya-green-dark: #008842;
+            --laya-blue: #0a2540;
+            --laya-blue-light: #1a3a5c;
+            --accent-teal: #00c9a7;
+            --accent-orange: #ff6b35;
+            --bg-dark: #0b1426;
+            --bg-card: #111d33;
+            --bg-card-hover: #162640;
+            --text-white: #ffffff;
+            --text-light: #c8d6e5;
+            --text-muted: #8899aa;
+            --gradient-main: linear-gradient(135deg, #00a651, #00c9a7);
+            --gradient-hero: linear-gradient(135deg, #0b1426 0%, #0a2540 50%, #112240 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ===== NAVIGATION ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(11, 20, 38, 0.92);
+            backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(0, 166, 81, 0.1);
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 14px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .nav-brand-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--gradient-main);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            color: white;
+            font-size: 14px;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .nav-brand-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-white);
+        }
+
+        .nav-brand-text span { color: var(--laya-green); }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--laya-green); }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-white);
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh;
+            background: var(--gradient-hero);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 120px 40px 80px;
+            overflow: hidden;
+        }
+
+        .hero-bg-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+        }
+
+        .hero-bg-shape.one {
+            width: 600px; height: 600px;
+            background: var(--laya-green);
+            top: -200px; right: -100px;
+        }
+
+        .hero-bg-shape.two {
+            width: 400px; height: 400px;
+            background: var(--accent-teal);
+            bottom: -100px; left: -50px;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-event-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: rgba(0, 166, 81, 0.1);
+            border: 1px solid rgba(0, 166, 81, 0.3);
+            border-radius: 50px;
+            color: var(--laya-green-light);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 28px;
+        }
+
+        .hero-event-badge i { font-size: 14px; }
+
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 60px;
+            font-weight: 700;
+            color: var(--text-white);
+            line-height: 1.1;
+            margin-bottom: 12px;
+        }
+
+        .hero h1 .highlight {
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero h2 {
+            font-size: 22px;
+            font-weight: 400;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+        }
+
+        .hero-desc {
+            font-size: 17px;
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+        }
+
+        .hero-kpis {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 44px;
+            flex-wrap: wrap;
+        }
+
+        .kpi {
+            text-align: center;
+            padding: 20px 28px;
+            background: rgba(0, 166, 81, 0.06);
+            border: 1px solid rgba(0, 166, 81, 0.15);
+            border-radius: 16px;
+            min-width: 150px;
+        }
+
+        .kpi-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--text-white);
+        }
+
+        .kpi-value span { color: var(--laya-green); }
+
+        .kpi-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-green {
+            background: var(--gradient-main);
+            color: var(--text-white);
+        }
+
+        .btn-green:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 166, 81, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-white);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--laya-green);
+            color: var(--laya-green);
+            transform: translateY(-2px);
+        }
+
+        /* ===== SECTIONS ===== */
+        section { padding: 100px 40px; }
+
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(0, 166, 81, 0.1);
+            border: 1px solid rgba(0, 166, 81, 0.2);
+            border-radius: 20px;
+            color: var(--laya-green-light);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .section-header h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 40px;
+            color: var(--text-white);
+            margin-bottom: 12px;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ===== PROBLEM ===== */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .problem-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 3px solid var(--accent-orange);
+            transition: transform 0.3s;
+        }
+
+        .problem-card:hover { transform: translateY(-4px); }
+
+        .problem-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 107, 53, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-orange);
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .problem-card h3 {
+            color: var(--text-white);
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+
+        .problem-card p {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        /* ===== SOLUTION / ARCHITECTURE ===== */
+        .solution-section { background: var(--laya-blue); }
+
+        .arch-overview {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .arch-overview p {
+            color: var(--text-light);
+            font-size: 17px;
+            max-width: 750px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 50px;
+        }
+
+        .module-card {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 32px;
+            border: 1px solid rgba(0, 166, 81, 0.15);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-main);
+        }
+
+        .module-card:hover {
+            border-color: rgba(0, 166, 81, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .module-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: rgba(0, 166, 81, 0.15);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .module-card h3 {
+            color: var(--laya-green-light);
+            font-size: 16px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .module-card h4 {
+            color: var(--text-white);
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+
+        .module-card p {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .module-features {
+            list-style: none;
+        }
+
+        .module-features li {
+            color: var(--text-light);
+            font-size: 13px;
+            padding: 6px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .module-features li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 13px;
+            width: 8px;
+            height: 8px;
+            background: var(--laya-green);
+            border-radius: 50%;
+        }
+
+        /* ===== TECH STACK ===== */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .tech-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+        }
+
+        .tech-card:hover {
+            border-color: rgba(0, 166, 81, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .tech-card i {
+            font-size: 28px;
+            color: var(--laya-green);
+            margin-bottom: 12px;
+        }
+
+        .tech-card h4 {
+            color: var(--text-white);
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .tech-card p {
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        /* ===== ROADMAP ===== */
+        .roadmap-section { background: var(--laya-blue); }
+
+        .roadmap-timeline {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            position: relative;
+        }
+
+        .roadmap-timeline::before {
+            content: '';
+            position: absolute;
+            top: 60px;
+            left: 10%;
+            right: 10%;
+            height: 3px;
+            background: linear-gradient(to right, var(--laya-green), var(--accent-teal), rgba(0, 201, 167, 0.3));
+            z-index: 0;
+        }
+
+        .phase-card {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 32px;
+            border: 1px solid rgba(0, 166, 81, 0.15);
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s;
+        }
+
+        .phase-card:hover { transform: translateY(-4px); }
+
+        .phase-dot {
+            width: 20px;
+            height: 20px;
+            background: var(--laya-green);
+            border-radius: 50%;
+            border: 4px solid var(--laya-blue);
+            margin: 0 auto 20px;
+        }
+
+        .phase-card .phase-label {
+            text-align: center;
+            color: var(--laya-green-light);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .phase-card .phase-weeks {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+
+        .phase-card h3 {
+            color: var(--text-white);
+            font-size: 18px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .phase-card p {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .phase-deliverables {
+            list-style: none;
+            margin-top: 12px;
+        }
+
+        .phase-deliverables li {
+            color: var(--text-light);
+            font-size: 13px;
+            padding: 4px 0 4px 18px;
+            position: relative;
+        }
+
+        .phase-deliverables li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--laya-green);
+            font-size: 10px;
+            top: 7px;
+        }
+
+        /* ===== PERSONAS ===== */
+        .personas-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .persona-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .persona-card:hover { transform: translateY(-4px); }
+
+        .persona-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 16px;
+        }
+
+        .persona-card:nth-child(1) .persona-avatar {
+            background: rgba(0, 166, 81, 0.15);
+            color: var(--laya-green);
+        }
+
+        .persona-card:nth-child(2) .persona-avatar {
+            background: rgba(0, 201, 167, 0.15);
+            color: var(--accent-teal);
+        }
+
+        .persona-card:nth-child(3) .persona-avatar {
+            background: rgba(255, 107, 53, 0.15);
+            color: var(--accent-orange);
+        }
+
+        .persona-card h3 {
+            color: var(--text-white);
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .persona-card .persona-role {
+            color: var(--laya-green-light);
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .persona-card blockquote {
+            color: var(--text-muted);
+            font-size: 14px;
+            font-style: italic;
+            line-height: 1.6;
+            border-left: 3px solid var(--laya-green);
+            padding-left: 14px;
+            text-align: left;
+        }
+
+        /* ===== TEAM ===== */
+        .team-section { background: var(--laya-blue); }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .team-card {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 28px;
+            text-align: center;
+            border: 1px solid rgba(0, 166, 81, 0.1);
+            transition: all 0.3s;
+        }
+
+        .team-card:hover {
+            border-color: rgba(0, 166, 81, 0.25);
+            transform: translateY(-4px);
+        }
+
+        .team-avatar {
+            width: 64px;
+            height: 64px;
+            background: var(--gradient-main);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .team-card h3 {
+            color: var(--text-white);
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .team-card p {
+            color: var(--laya-green-light);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        /* ===== SECURITY ===== */
+        .security-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .security-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            transition: transform 0.3s;
+        }
+
+        .security-card:hover { transform: translateY(-3px); }
+
+        .security-icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(0, 166, 81, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--laya-green);
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .security-card h4 {
+            color: var(--text-white);
+            font-size: 15px;
+            margin-bottom: 6px;
+        }
+
+        .security-card p {
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--bg-dark);
+            padding: 40px;
+            text-align: center;
+            border-top: 1px solid rgba(0, 166, 81, 0.1);
+        }
+
+        .footer-brand {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-white);
+            margin-bottom: 8px;
+        }
+
+        .footer-brand span { color: var(--laya-green); }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        footer .event-info {
+            margin-top: 8px;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .nav-links { display: none; }
+            .nav-links.active {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0; right: 0;
+                background: rgba(11, 20, 38, 0.98);
+                padding: 20px 40px;
+                gap: 16px;
+                border-bottom: 1px solid rgba(0, 166, 81, 0.1);
+            }
+            .nav-toggle { display: block; }
+            .hero h1 { font-size: 38px; }
+            .hero-kpis { gap: 16px; }
+            .problem-grid,
+            .modules-grid,
+            .roadmap-timeline,
+            .personas-grid,
+            .team-grid,
+            .security-grid { grid-template-columns: 1fr; }
+            .roadmap-timeline::before { display: none; }
+            section { padding: 60px 20px; }
+            .hero { padding: 120px 20px 60px; }
+            .hero-buttons { flex-direction: column; align-items: center; }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 30px; }
+            .hero-kpis { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-inner">
+            <a href="#" class="nav-brand">
+                <div class="nav-brand-icon">LU</div>
+                <div class="nav-brand-text">L<span>UIE</span></div>
+            </a>
+            <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links">
+                <li><a href="#problem">Problem</a></li>
+                <li><a href="#solution">Solution</a></li>
+                <li><a href="#personas">Personas</a></li>
+                <li><a href="#roadmap">Roadmap</a></li>
+                <li><a href="#tech">Tech Stack</a></li>
+                <li><a href="#team">Team</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-bg-shape one"></div>
+        <div class="hero-bg-shape two"></div>
+        <div class="hero-content">
+            <div class="hero-event-badge">
+                <i class="fas fa-bolt"></i>
+                NCI x Laya Healthcare Hackathon 2026
+            </div>
+            <h1>Laya <span class="highlight">Unified Intelligence</span> Ecosystem</h1>
+            <h2>One Brain. Three Layers. Zero Bottlenecks.</h2>
+            <p class="hero-desc">An Agentic RAG-powered platform that transforms Laya Healthcare's claims pipeline &mdash; from chaotic manual workflows into an intelligent, automated ecosystem serving 35,000+ claims per month.</p>
+            <div class="hero-kpis">
+                <div class="kpi">
+                    <div class="kpi-value">90<span>%</span></div>
+                    <div class="kpi-label">STP Target</div>
+                </div>
+                <div class="kpi">
+                    <div class="kpi-value">-25<span>%</span></div>
+                    <div class="kpi-label">AHT Reduction</div>
+                </div>
+                <div class="kpi">
+                    <div class="kpi-value">&lt;5<span>%</span></div>
+                    <div class="kpi-label">Pend Rate</div>
+                </div>
+                <div class="kpi">
+                    <div class="kpi-value">85<span>%+</span></div>
+                    <div class="kpi-label">FCR Target</div>
+                </div>
+            </div>
+            <div class="hero-buttons">
+                <a href="#solution" class="btn btn-green"><i class="fas fa-rocket"></i> Explore the Solution</a>
+                <a href="#roadmap" class="btn btn-outline"><i class="fas fa-map"></i> View Roadmap</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Statement -->
+    <section id="problem">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag">The Challenge</div>
+                <h2>Why This Matters</h2>
+                <p>Laya Healthcare processes 35,000 claims/month with fragmented manual workflows</p>
+            </div>
+            <div class="problem-grid">
+                <div class="problem-card fade-up">
+                    <div class="problem-icon"><i class="fas fa-file-circle-xmark"></i></div>
+                    <h3>The "Black Box" Submission</h3>
+                    <p>Members submit claims without validation. Incomplete claims with missing Consultant Codes and illegible receipts enter as "Pending," causing costly operational back-and-forth and weeks of delays.</p>
+                </div>
+                <div class="problem-card fade-up">
+                    <div class="problem-icon"><i class="fas fa-headset"></i></div>
+                    <h3>Agent Knowledge Gaps</h3>
+                    <p>Support agents handling 50+ calls/day face high cognitive load. To answer complex queries, they search static Excel sheets or physically consult team leads, inflating Average Handling Time.</p>
+                </div>
+                <div class="problem-card fade-up">
+                    <div class="problem-icon"><i class="fas fa-filter-circle-xmark"></i></div>
+                    <h3>Manual Triage Bottleneck</h3>
+                    <p>High-volume, low-complexity claims are mixed with complex, high-risk claims. Human adjusters spend time on routine data entry rather than adjudication of genuinely complex cases.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution / Architecture -->
+    <section id="solution" class="solution-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag">Our Solution</div>
+                <h2>The Unified Intelligence Ecosystem</h2>
+                <p>A central Agentic RAG brain powering three operational layers</p>
+            </div>
+            <div class="arch-overview fade-up">
+                <p>The <strong>LUIE</strong> architecture creates a single "Master Brain" using Retrieval-Augmented Generation. This central intelligence layer ingests all policy documents, claims history, and operational knowledge to serve as the single source of truth across every touchpoint.</p>
+            </div>
+            <div class="modules-grid">
+                <div class="module-card fade-up">
+                    <div class="module-number">A</div>
+                    <h3>Module A</h3>
+                    <h4>The "Gatekeeper"</h4>
+                    <p>Pre-claim validation via WhatsApp & Web that catches incomplete submissions before they enter the system.</p>
+                    <ul class="module-features">
+                        <li>OCR-powered receipt scanning (95%+ accuracy)</li>
+                        <li>Real-time policy & rule validation</li>
+                        <li>Interactive feedback for missing data</li>
+                        <li>Only "clean" claims reach the backend</li>
+                    </ul>
+                </div>
+                <div class="module-card fade-up">
+                    <div class="module-number">B</div>
+                    <h3>Module B</h3>
+                    <h4>The "Copilot"</h4>
+                    <p>Real-time agent assist that listens, understands, and surfaces the right answers during live calls.</p>
+                    <ul class="module-features">
+                        <li>Live voice transcription (&lt;2s latency)</li>
+                        <li>Intent recognition for call topics</li>
+                        <li>Dynamic "Smart Cards" on agent screen</li>
+                        <li>Source citations for compliance</li>
+                    </ul>
+                </div>
+                <div class="module-card fade-up">
+                    <div class="module-number">C</div>
+                    <h3>Module C</h3>
+                    <h4>The "Triage Engine"</h4>
+                    <p>AI-driven risk scoring and intelligent routing that automates routine claims and flags anomalies.</p>
+                    <ul class="module-features">
+                        <li>Risk Score (0-100) for every claim</li>
+                        <li>Auto-pay for low-risk (Score 0-20)</li>
+                        <li>Deep rule check for medium risk</li>
+                        <li>Fraud detection with anomaly alerts</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Personas -->
+    <section id="personas">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag">User Personas</div>
+                <h2>Who We're Building For</h2>
+                <p>Three core users whose daily pain points drive our design</p>
+            </div>
+            <div class="personas-grid">
+                <div class="persona-card fade-up">
+                    <div class="persona-avatar"><i class="fas fa-user"></i></div>
+                    <h3>"Patient Patrick"</h3>
+                    <div class="persona-role">Laya Member</div>
+                    <blockquote>"I want to upload a photo of my receipt to WhatsApp and be told instantly if I'm missing any details, so I don't have to wait weeks for a rejection letter."</blockquote>
+                </div>
+                <div class="persona-card fade-up">
+                    <div class="persona-avatar"><i class="fas fa-headset"></i></div>
+                    <h3>"Agent Sarah"</h3>
+                    <div class="persona-role">Customer Support Agent</div>
+                    <blockquote>"I want the system to listen to my call and pop up the correct policy answer on my screen, so I don't have to put the customer on hold to ask a manager."</blockquote>
+                </div>
+                <div class="persona-card fade-up">
+                    <div class="persona-avatar"><i class="fas fa-clipboard-check"></i></div>
+                    <h3>"Claims Manager Mike"</h3>
+                    <div class="persona-role">Claims Adjuster</div>
+                    <blockquote>"I only want to see claims that have a High Risk Score or Policy Violations. Routine claims should be auto-approved so I can focus on complex cases."</blockquote>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap -->
+    <section id="roadmap" class="roadmap-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag">Implementation</div>
+                <h2>Phased Roadmap</h2>
+                <p>From MVP to full ecosystem in 16 weeks</p>
+            </div>
+            <div class="roadmap-timeline">
+                <div class="phase-card fade-up">
+                    <div class="phase-dot"></div>
+                    <div class="phase-label">Phase 1</div>
+                    <div class="phase-weeks">Weeks 1-4</div>
+                    <h3>The "Smart Search" (MVP)</h3>
+                    <p>Solve the Agent knowledge problem first.</p>
+                    <ul class="phase-deliverables">
+                        <li>Ingest Excel Q/A & Policy Docs into Vector DB</li>
+                        <li>Launch RAG Chatbot for agents</li>
+                        <li>Agents stop using physical "Query Room"</li>
+                    </ul>
+                </div>
+                <div class="phase-card fade-up">
+                    <div class="phase-dot"></div>
+                    <div class="phase-label">Phase 2</div>
+                    <div class="phase-weeks">Weeks 5-10</div>
+                    <h3>The "Risk Gatekeeper"</h3>
+                    <p>Solve the 35k monthly volume bottleneck.</p>
+                    <ul class="phase-deliverables">
+                        <li>Deploy OCR pipeline for incoming scans</li>
+                        <li>Build & train Risk Scoring Model</li>
+                        <li>Connect low-risk claims to RPA auto-pay</li>
+                    </ul>
+                </div>
+                <div class="phase-card fade-up">
+                    <div class="phase-dot"></div>
+                    <div class="phase-label">Phase 3</div>
+                    <div class="phase-weeks">Weeks 11-16</div>
+                    <h3>The "Unified Ecosystem"</h3>
+                    <p>Full end-to-end integration achieved.</p>
+                    <ul class="phase-deliverables">
+                        <li>Launch WhatsApp Gatekeeper bot</li>
+                        <li>Enable Live Voice Transcription</li>
+                        <li>Complete unified intelligence loop</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section id="tech">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag">Technology</div>
+                <h2>Tech Stack</h2>
+                <p>Enterprise-grade architecture built on proven technologies</p>
+            </div>
+            <div class="tech-grid fade-up">
+                <div class="tech-card">
+                    <i class="fas fa-brain"></i>
+                    <h4>LLM Layer</h4>
+                    <p>GPT-4o / Llama 3</p>
+                </div>
+                <div class="tech-card">
+                    <i class="fas fa-link"></i>
+                    <h4>Orchestration</h4>
+                    <p>LangChain / Semantic Kernel</p>
+                </div>
+                <div class="tech-card">
+                    <i class="fas fa-database"></i>
+                    <h4>Vector DB</h4>
+                    <p>Pinecone / Weaviate</p>
+                </div>
+                <div class="tech-card">
+                    <i class="fas fa-snowflake"></i>
+                    <h4>Structured Data</h4>
+                    <p>Snowflake</p>
+                </div>
+                <div class="tech-card">
+                    <i class="fas fa-eye"></i>
+                    <h4>OCR Engine</h4>
+                    <p>Azure Document Intelligence</p>
+                </div>
+                <div class="tech-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h4>Risk Model</h4>
+                    <p>XGBoost (Python)</p>
+                </div>
+                <div class="tech-card">
+                    <i class="fab fa-react"></i>
+                    <h4>Frontend</h4>
+                    <p>React / WhatsApp API</p>
+                </div>
+                <div class="tech-card">
+                    <i class="fab fa-microsoft"></i>
+                    <h4>Cloud</h4>
+                    <p>Azure (EU Region)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security & Compliance -->
+    <section id="security">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag">Trust & Safety</div>
+                <h2>Security & Compliance</h2>
+                <p>Built with healthcare-grade data protection from day one</p>
+            </div>
+            <div class="security-grid">
+                <div class="security-card fade-up">
+                    <div class="security-icon"><i class="fas fa-user-shield"></i></div>
+                    <div>
+                        <h4>PII Redaction</h4>
+                        <p>All personal identifiable information is redacted before sending text to the LLM for reasoning.</p>
+                    </div>
+                </div>
+                <div class="security-card fade-up">
+                    <div class="security-icon"><i class="fas fa-globe-europe"></i></div>
+                    <div>
+                        <h4>GDPR Compliant</h4>
+                        <p>Full data residency within the EU (Dublin Region). No data leaves European infrastructure.</p>
+                    </div>
+                </div>
+                <div class="security-card fade-up">
+                    <div class="security-icon"><i class="fas fa-clipboard-list"></i></div>
+                    <div>
+                        <h4>Full Audit Trail</h4>
+                        <p>Every AI decision &mdash; triage score, rule check &mdash; is logged with timestamp and reasoning trace.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team -->
+    <section id="team" class="team-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag">Our Team</div>
+                <h2>Meet the Team</h2>
+                <p>MSc AI for Business students at the National College of Ireland</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-card fade-up">
+                    <div class="team-avatar">1</div>
+                    <h3>Team Member 1</h3>
+                    <p>MSc AI for Business, NCI</p>
+                </div>
+                <div class="team-card fade-up">
+                    <div class="team-avatar">2</div>
+                    <h3>Team Member 2</h3>
+                    <p>MSc AI for Business, NCI</p>
+                </div>
+                <div class="team-card fade-up">
+                    <div class="team-avatar">3</div>
+                    <h3>Team Member 3</h3>
+                    <p>MSc AI for Business, NCI</p>
+                </div>
+                <div class="team-card fade-up">
+                    <div class="team-avatar">4</div>
+                    <h3>Team Member 4</h3>
+                    <p>MSc AI for Business, NCI</p>
+                </div>
+                <div class="team-card fade-up">
+                    <div class="team-avatar">5</div>
+                    <h3>Team Member 5</h3>
+                    <p>MSc AI for Business, NCI</p>
+                </div>
+                <div class="team-card fade-up">
+                    <div class="team-avatar">6</div>
+                    <h3>Team Member 6</h3>
+                    <p>MSc AI for Business, NCI</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-brand">L<span>UIE</span></div>
+        <p>Laya Unified Intelligence Ecosystem</p>
+        <p class="event-info">Built for the NCI x Laya Healthcare Hackathon 2026 &bull; MSc AI for Business, National College of Ireland</p>
+    </footer>
+
+    <script>
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+        // Close mobile nav on link click
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelector('.nav-links').classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
